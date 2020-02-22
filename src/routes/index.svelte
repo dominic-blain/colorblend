@@ -1,10 +1,8 @@
 <script>
-
+	import Blender from '../components/Blender.svelte';
 </script>
 
-<style>
-
-</style>
+<Blender />
 
 <svelte:head>
 	<title>C O L O R B L E N D</title>

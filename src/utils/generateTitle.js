@@ -1,6 +1,6 @@
 const generateTitle = function (title, b, f) {
     let chars = title.split('')
-    let total = title.match(/\S/g).length + 1
+    let total = title.match(/\S/g).length - 1
     let count = 0
     let html = ''
 

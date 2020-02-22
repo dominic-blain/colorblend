@@ -15,8 +15,10 @@
 <section>
     <aside>
         <h1>{@html title}</h1>
-        <h2>Background: rgb({f.r}, {f.g}, {f.b})</h2>
-        <h2>Foreground: rgb({b.r}, {b.g}, {b.b})</h2>
+        <div class="pickers">
+            <div class="background picker" style="background-color: rgb({b.r}, {b.g}, {b.b});"></div>
+            <div class="foreground picker" style="background-color: rgb({f.r}, {f.g}, {f.b});"></div>
+        </div>
     </aside>
     <main {style}>
         {#each a as alpha}
@@ -47,10 +49,17 @@
         font-size: 2.5vw;
         margin: 0;
     }
-    
-    h2 {
-        font-size: 1vw;
+
+    .pickers {
+        width: 100%;
+        display: flex;
     }
+    
+    .picker {
+        width: 50%;
+        padding-bottom: 50%;
+    }
+
 	main {
 		display: grid;
         flex-grow: 1;

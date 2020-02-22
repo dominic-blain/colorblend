@@ -8,7 +8,7 @@
 	let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
 
     $: style = generateMainCSSVars(b,f)
-    const title = generateTitle('C O L O R B L E N D')
+    $: title = generateTitle('COLORBLEND', b, f)
 	
 </script>
 
@@ -39,16 +39,15 @@
         top: 0;
         box-sizing: border-box;
         text-align: center;
-        padding: 5vw 2vw;
         background-color: white;
         width: 25vw;
-        min-width: 300px;
-        max-width: 100%;
         box-shadow: 2px 0px 10px 0 rgba(0,0,0,0.05);
     }
     h1 {
-        font-size: 2vw;
+        font-size: 2.5vw;
+        margin: 0;
     }
+    
     h2 {
         font-size: 1vw;
     }

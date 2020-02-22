@@ -1,15 +1,44 @@
 <script>
     import { generateMainCSSVars } from '../utils/generateCSSVars'
+    import createPicker from '../utils/createPicker'
     import generateTitle from '../utils/generateTitle'
-	import Blend from '../components/Blend.svelte'
+    import Blend from '../components/Blend.svelte'
+    import { onMount } from 'svelte'
 
-	let b = {r:255, g:255, b:255}
+    let pickrReady = false
+    let mounted = false
+
+    let b = {r:255, g:255, b:255}
 	let f = {r:0, g:0, b:0}
 	let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
 
+    let foregroundPicker = null
+    let backgroundPicker = null
+
+    onMount(() => {
+        mounted = true
+        if (pickrReady) createBlenderPickers()
+    })
+
+    function onPickrReady() {
+        pickrReady = true
+        if (mounted) createBlenderPickers()
+    }
+
+    function createBlenderPickers () {
+        foregroundPicker = createPicker('.picker.foreground')
+        backgroundPicker = createPicker('.picker.background')
+        foregroundPicker.on('change', (color) => updateRGB(color.toRGBA(), false))
+        backgroundPicker.on('change', (color) => updateRGB(false, color.toRGBA()))
+    }
+
+    function updateRGB(foreground, background) {
+        if (foreground) f = { r:foreground[0], g:foreground[1], b:foreground[2] }
+        if (background) b = { r:background[0], g:background[1], b:background[2] }
+    }
+
     $: style = generateMainCSSVars(b,f)
     $: title = generateTitle('COLORBLEND', b, f)
-	
 </script>
 
 <section>
@@ -26,8 +55,11 @@
         {/each}
     </main>
 </section>
-	
 
+<svelte:head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js" on:load={onPickrReady}></script>
+</svelte:head>
 
 <style>
     section {

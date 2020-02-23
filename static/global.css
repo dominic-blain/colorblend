@@ -5,8 +5,8 @@ body {
 
 .letter {
 	display: inline-flex;
-    width: 2em;
-    height: 2em;
+    width: 20%;
+    height: 50%;
     align-items: center;
     justify-content: center;
 }

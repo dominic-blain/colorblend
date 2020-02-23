@@ -5,13 +5,19 @@
     export let f = {r:0, g:0, b:0}
     export let alpha = 1
 
+    // $: light = (b.r + b.g + b.b) / 3 > 127
+
     $: style = generateBlendCSSVars(b, f, alpha)
 </script>
 
 <section {style}>
-    <div class="witness"></div>
-    <div class="blended"></div>
-    <div class="foreground"></div>
+    <div class="witness">
+       <svg preserveAspectRatio="none" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M40 0v20H20V0zM20 20v20H0V20zM80 0v20H60V0zM60 20v20H40V20zM100 20v20H80V20zM40 40v20H20V40zM20 60v20H0V60zM80 40v20H60V40zM120 0v20h-20V0zM120 40v20h-20V40zM60 60v20H40V60zM100 60v20H80V60z"/>
+        </svg>
+    </div>
+    <div class="blended" />
+    <div class="foreground" />
 </section>
 
 <style>
@@ -20,42 +26,43 @@
         grid-row: auto / span 1;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
-        padding: 1vw;
-        border-radius: 5px;
-        background-color: var(--background);
-        box-shadow: 0px 2px 10px 0 rgba(0,0,0,0.05);
         position: relative;
+        box-sizing: border-box;
     }
 
+    .witness {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        color: var(--witness);
+        z-index: 1;
+    }
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
     .foreground,
-    .blended{
+    .blended {
         width: 100%;
         height: 50%;
         position: relative;
-        z-index: 1;
+        z-index: 2;
         display: flex;
         align-items: flex-start;
         justify-content: center;
     }
-    .foreground {
-        background-color: var(--foreground);
-    }
     .blended {
         background-color: var(--blended);
     }
-    /* .alpha { border-bottom: 1px solid rgb(@rb, @gb, @bb); }
-    .opaque { border-top: 1px solid rgb(@rb, @gb, @bb); } */
-
-    .witness {
-        position: absolute;
-        margin: 1vw;
-        margin-left: 0;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        background-color: silver;
+    .foreground {
+        background-color: var(--foreground);
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(4, 1fr);
     }
+
     
 </style>

@@ -7,17 +7,23 @@
 
     // $: light = (b.r + b.g + b.b) / 3 > 127
 
-    $: style = generateBlendCSSVars(b, f, alpha)
+    $: vars = generateBlendCSSVars(b, f, alpha)
+    
 </script>
 
-<section {style}>
+<section style={vars.style}>
     <div class="witness">
        <svg preserveAspectRatio="none" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M40 0v20H20V0zM20 20v20H0V20zM80 0v20H60V0zM60 20v20H40V20zM100 20v20H80V20zM40 40v20H20V40zM20 60v20H0V60zM80 40v20H60V40zM120 0v20h-20V0zM120 40v20h-20V40zM60 60v20H40V60zM100 60v20H80V60z"/>
         </svg>
     </div>
-    <div class="blended" />
-    <div class="foreground" />
+    <div class="blended">
+        <div class="code">({vars.t.r}, {vars.t.g}, {vars.t.b}, 1)</div>
+    </div>
+    <div class="foreground">
+        <div class="code">({f.r}, {f.g}, {f.b}, {alpha})</div>
+    </div>
+    <h2>{alpha * 100}%</h2>
 </section>
 
 <style>
@@ -51,7 +57,7 @@
         position: relative;
         z-index: 2;
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: center;
     }
     .blended {
@@ -59,10 +65,28 @@
     }
     .foreground {
         background-color: var(--foreground);
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(4, 1fr);
     }
 
+    .code {
+        background-color: var(--witness);
+        color: var(--original);
+        font-size: 1.2vw;
+        padding: 0.125em 0.4em;
+        border-radius: 3px;
+    }
+
+    h2 {
+        background-color: var(--background);
+        color: var(--original);
+        position: absolute;
+        top:50%; 
+        left:50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        z-index: 3;
+        font-size: 1.2vw;
+        padding: 0.125em 0.4em;
+        border-radius: 3px;
+    }
     
 </style>

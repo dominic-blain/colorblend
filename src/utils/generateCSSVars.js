@@ -7,6 +7,8 @@ export const generateMainCSSVars = function (b, f) {
         vars.push(`--${channel}f:${cf};`)
         vars.push(`--${channel}w:${Math.round(cb - (cb - cf) * 0.2)};`)
     })
+    // Original color code
+    vars.push('--original:rgb(var(--rf), var(--gf), var(--bf));')
     // Background color code
     vars.push('--background:rgb(var(--rb), var(--gb), var(--bb));')
     // Witness color code
@@ -16,12 +18,18 @@ export const generateMainCSSVars = function (b, f) {
 
 export const generateBlendCSSVars = function (b, f, a) {
     let vars = []
+    let t = {
+        r: 0,
+        g: 0,
+        b: 0
+    }
     // Blended rgb values
     Object.keys(f).forEach(channel => {
         const cf = f[channel]
         const cb = b[channel]
-        vars.push(`--${channel}t:${Math.round(cf * a + (1 - a) * cb)};`)
-        
+        const ct = Math.round(cf * a + (1 - a) * cb)
+        vars.push(`--${channel}t:${ct};`)
+        t[channel] = ct
     })
     // Alpha value
     vars.push(`--a:${a};`)
@@ -30,5 +38,8 @@ export const generateBlendCSSVars = function (b, f, a) {
     // Blended color code
     vars.push('--blended:rgb(var(--rt), var(--gt), var(--bt));')
     
-    return vars.join(' ')
+    return {
+        style: vars.join(' '),
+        t: t
+    }
 }

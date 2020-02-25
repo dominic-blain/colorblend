@@ -43,8 +43,16 @@
 
 <section {style}>
     <h1>{@html title}</h1>
-    <div class="background picker" style="background-color: rgb({b.r}, {b.g}, {b.b});"></div>
-    <div class="foreground picker" style="background-color: rgb({f.r}, {f.g}, {f.b});"></div>
+    <div class="background picker" style="background-color: rgb({b.r}, {b.g}, {b.b});">
+        <div class="picker-name">
+            Background
+        </div>
+    </div>
+    <div class="foreground picker" style="background-color: rgb({f.r}, {f.g}, {f.b});">
+        <div class="picker-name">
+            Foreground
+        </div>
+    </div>
     <!-- Swatches -->
     <main>
         {#each a as alpha}
@@ -79,6 +87,22 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: repeat(2, 1fr);
+    }
+    .picker {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .picker-name {
+        font-size: 2.5vw;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .picker.background .picker-name {
+        color: var(--original);
+    }
+    .picker.foreground .picker-name {
+        color: var(--background);
     }
     .swatch {
         grid-column-end: span 1;

@@ -65,22 +65,35 @@
         width: 100%;
         min-height: 100vh;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 13.33vw 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 40vw 40vw 1fr;
         background-color: var(--background);
     }
     h1 {
         font-size: 2.5vw;
         margin: 0;
+        grid-column-end: span 2;
     }
     main {
-        grid-column-end: span 3;
+        grid-column-end: span 2;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: repeat(2, 1fr);
     }
     .swatch {
         grid-column-end: span 1;
+    }
+    @media (min-width: 700px) {
+        h1 {
+            grid-column-end: span 1;
+        }
+        section {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 13.33vw 1fr;
+        }
+        main {
+            grid-column-end: span 3;
+        }
     }
 	
 </style>

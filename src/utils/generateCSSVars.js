@@ -5,7 +5,7 @@ export const generateMainCSSVars = function (b, f) {
         const cf = f[channel]
         vars.push(`--${channel}b:${cb};`)
         vars.push(`--${channel}f:${cf};`)
-        vars.push(`--${channel}w:${cb - (cb - cf) * 0.2};`)
+        vars.push(`--${channel}w:${Math.round(cb - (cb - cf) * 0.2)};`)
     })
     // Background color code
     vars.push('--background:rgb(var(--rb), var(--gb), var(--bb));')
@@ -20,7 +20,7 @@ export const generateBlendCSSVars = function (b, f, a) {
     Object.keys(f).forEach(channel => {
         const cf = f[channel]
         const cb = b[channel]
-        vars.push(`--${channel}t:${cf * a + (1 - a) * cb};`)
+        vars.push(`--${channel}t:${Math.round(cf * a + (1 - a) * cb)};`)
         
     })
     // Alpha value

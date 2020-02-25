@@ -7,8 +7,8 @@ const generateTitle = function (title, b, f) {
     const getRGB = function (count, from, to, log) {
         let rgb = { r: 0, g: 0, b: 0 }
         Object.keys(from).forEach(channel => {
-            const cFrom = from[channel]
-            const cTo = to[channel]
+            const cFrom = to[channel]
+            const cTo = from[channel]
             rgb[channel] = Math.round(cFrom - (cFrom - cTo) / total * count)
         })
         return rgb

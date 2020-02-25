@@ -3,6 +3,8 @@
     import createPicker from '../utils/createPicker'
     import generateTitle from '../utils/generateTitle'
     import Blend from '../components/Blend.svelte'
+    import { fly } from 'svelte/transition'
+    import { backOut} from 'svelte/easing'
     import { onMount } from 'svelte'
 
     let pickrReady = false
@@ -14,6 +16,11 @@
 
     let foregroundPicker = null
     let backgroundPicker = null
+
+    let pickerNameVisible = {
+        f: false,
+        b: false
+    }
 
     onMount(() => {
         mounted = true
@@ -37,22 +44,35 @@
         if (background) b = { r:Math.round(background[0]), g:Math.round(background[1]), b:Math.round(background[2]) }
     }
 
+    function handleMouseover () {
+        pickerNameVisible.f = true
+    }
+
     $: style = generateMainCSSVars(b,f)
     $: title = generateTitle('COLORBLEND', b, f)
 </script>
 
 <section {style}>
     <h1>{@html title}</h1>
-    <div class="background picker" style="background-color: rgb({b.r}, {b.g}, {b.b});">
-        <div class="picker-name">
-            Background
-        </div>
+     <div class="foreground picker" style="background-color: rgb({f.r}, {f.g}, {f.b});" on:mouseenter={() => pickerNameVisible.f = true} on:mouseleave={() => pickerNameVisible.f = false}>
+        {#if pickerNameVisible.f}
+            <div class="picker-name">
+                <small transition:fly={{y: -10, duration: 200}}>choose</small>
+                <strong transition:fly={{y: -10, duration: 200, delay:30, easing: backOut}}>Foreground</strong>
+                <small transition:fly={{y: -10, duration: 200, delay:45, easing: backOut}}>color</small>
+            </div>
+        {/if}
     </div>
-    <div class="foreground picker" style="background-color: rgb({f.r}, {f.g}, {f.b});">
-        <div class="picker-name">
-            Foreground
-        </div>
+    <div class="background picker" style="background-color: rgb({b.r}, {b.g}, {b.b});" on:mouseenter={() => pickerNameVisible.b = true} on:mouseleave={() => pickerNameVisible.b = false}>
+       {#if pickerNameVisible.b}
+            <div class="picker-name">
+                <small transition:fly={{y: -10, duration: 200}}>choose</small>
+                <strong transition:fly={{y: -10, duration: 200, delay:30, easing: backOut}}>Background</strong>
+                <small transition:fly={{y: -10, duration: 200, delay:45, easing: backOut}}>color</small>
+            </div>
+        {/if}
     </div>
+   
     <!-- Swatches -->
     <main>
         {#each a as alpha}
@@ -64,6 +84,7 @@
 </section>
 
 <svelte:head>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code:400,500,600|Work+Sans:700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js" on:load={onPickrReady}></script>
 </svelte:head>
@@ -92,11 +113,23 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
     .picker-name {
+        text-align: center;
         font-size: 2.5vw;
         font-weight: bold;
         text-transform: uppercase;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.1em;
+    }
+    .picker-name small {
+        text-transform: uppercase;
+        font-size: 1vw;
+        line-height: 1.1em;
     }
     .picker.background .picker-name {
         color: var(--original);

@@ -1,5 +1,4 @@
 const createPicker = function (el) {
-    console.log('create pickr')
     const picker = new Pickr({
         el: el,
         theme: 'nano',

@@ -12,7 +12,9 @@
 
     let b = {r:255, g:255, b:255}
 	let f = {r:0, g:0, b:0}
-	let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    
+    let faviconHref = `/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
 
     let foregroundPicker = null
     let backgroundPicker = null
@@ -37,11 +39,17 @@
         backgroundPicker = createPicker('.picker.background')
         foregroundPicker.on('change', (color) => updateRGB(color.toRGBA(), false))
         backgroundPicker.on('change', (color) => updateRGB(false, color.toRGBA()))
+        foregroundPicker.on('changestop', (color) => updateFavicon())
+        backgroundPicker.on('changestop', (color) => updateFavicon())
     }
 
     function updateRGB(foreground, background) {
         if (foreground) f = { r:Math.round(foreground[0]), g:Math.round(foreground[1]), b:Math.round(foreground[2]) }
         if (background) b = { r:Math.round(background[0]), g:Math.round(background[1]), b:Math.round(background[2]) }
+    }
+    
+    function updateFavicon() {
+        faviconHref = `/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
     }
 
     $: style = generateMainCSSVars(b,f)
@@ -68,6 +76,7 @@
 </section>
 
 <svelte:head>
+    <link rel="icon" type="image/svg+xml" href="{faviconHref}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=fallback" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js" on:load={onPickrReady}></script>

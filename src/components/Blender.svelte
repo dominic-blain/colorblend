@@ -12,9 +12,9 @@
 
     let b = {r:255, g:255, b:255}
 	let f = {r:0, g:0, b:0}
-    let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05]
     
-    let faviconHref = `/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
+    let faviconHref = `/api/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
 
     let foregroundPicker = null
     let backgroundPicker = null
@@ -49,7 +49,7 @@
     }
     
     function updateFavicon() {
-        faviconHref = `/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
+        faviconHref = `/api/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
     }
 
     $: style = generateMainCSSVars(b,f)

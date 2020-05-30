@@ -13,8 +13,12 @@
     let b = {r:255, g:255, b:255}
 	let f = {r:0, g:0, b:0}
     let a = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05]
-    
-    let faviconHref = `/api/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
+
+    $: query = new URLSearchParams({
+        fr: f.r, fg: f.g, fb: f.b,
+        br: b.r, bg: b.g, bb: b.b
+    });
+    $: faviconHref = `/api/favicon/?${query.toString()}`
 
     let foregroundPicker = null
     let backgroundPicker = null
@@ -26,6 +30,7 @@
 
     onMount(() => {
         mounted = true
+        getColorsFromQuery()
         if (pickrReady) createBlenderPickers()
     })
 
@@ -39,17 +44,27 @@
         backgroundPicker = createPicker('.picker.background')
         foregroundPicker.on('change', (color) => updateRGB(color.toRGBA(), false))
         backgroundPicker.on('change', (color) => updateRGB(false, color.toRGBA()))
-        foregroundPicker.on('changestop', (color) => updateFavicon())
-        backgroundPicker.on('changestop', (color) => updateFavicon())
+        foregroundPicker.on('changestop', (color) => updateQuery())
+        backgroundPicker.on('changestop', (color) => updateQuery())
     }
 
     function updateRGB(foreground, background) {
         if (foreground) f = { r:Math.round(foreground[0]), g:Math.round(foreground[1]), b:Math.round(foreground[2]) }
         if (background) b = { r:Math.round(background[0]), g:Math.round(background[1]), b:Math.round(background[2]) }
     }
+
+    function getColorsFromQuery() {
+        const initialQuery = new URLSearchParams(window.location.href)
+        if (initialQuery.has('fr')) f.r = initialQuery.get('fr')
+        if (initialQuery.has('fg')) f.g = initialQuery.get('fg')
+        if (initialQuery.has('fb')) f.b = initialQuery.get('fb')
+        if (initialQuery.has('br')) b.r = initialQuery.get('br')
+        if (initialQuery.has('bg')) b.g = initialQuery.get('bg')
+        if (initialQuery.has('bb')) b.b = initialQuery.get('bb')
+    }
     
-    function updateFavicon() {
-        faviconHref = `/api/favicon/?f=rgb(${f.r},${f.g},${f.b})&b=rgb(${b.r},${b.g},${b.b})`
+    function updateQuery() {
+        window.history.pushState({}, '', '?' + query.toString())
     }
 
     $: style = generateMainCSSVars(b,f)
